@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @ToString
@@ -20,6 +22,8 @@ public class Point implements Serializable {
   private String id;
   private Long amount;
   private LocalDateTime refreshTime;
+
+  private List<Item> items = new ArrayList<>();
 
   @Builder
   public Point(String id, Long amount, LocalDateTime refreshTime) {
@@ -34,6 +38,10 @@ public class Point implements Serializable {
       this.amount = amount;
       this.refreshTime = refreshTime;
     }
+  }
+
+  public void addItem(String name) {
+    this.items.add(Item.builder().name(name).build());
   }
 
 }

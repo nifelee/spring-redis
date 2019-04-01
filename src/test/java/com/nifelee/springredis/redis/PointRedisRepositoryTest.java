@@ -19,7 +19,7 @@ public class PointRedisRepositoryTest {
   private PointRedisRepository pointRedisRepository;
 
   @Test
-  public void 기본_등록_조회기능() {
+  public void save_And_findById() {
     //given
     String id = "nifelee";
     LocalDateTime refreshTime = LocalDateTime.now();
@@ -41,7 +41,7 @@ public class PointRedisRepositoryTest {
   }
 
   @Test
-  public void 수정기능() {
+  public void update() {
     //given
     String id = "nifelee";
     LocalDateTime refreshTime = LocalDateTime.of(2018, 5, 26, 0, 0);
@@ -61,6 +61,28 @@ public class PointRedisRepositoryTest {
     Point refreshPoint = pointRedisRepository.findById(id).get();
     log.debug("refreshPoint : {}", refreshPoint);
     Assertions.assertThat(refreshPoint.getAmount()).isEqualTo(2000L);
+  }
+
+  @Test
+  public void list() {
+    //given
+    String id = "nifelee";
+    LocalDateTime refreshTime = LocalDateTime.now();
+
+    Point point = Point.builder()
+        .id(id)
+        .amount(1000L)
+        .refreshTime(refreshTime)
+        .build();
+
+    point.addItem("item");
+
+    //when
+    pointRedisRepository.save(point);
+
+    //then
+    Point savedPoint = pointRedisRepository.findById(id).get();
+    log.debug("point : {}", savedPoint);
   }
 
 }
